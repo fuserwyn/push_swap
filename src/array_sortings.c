@@ -6,7 +6,7 @@
 /*   By: fuserwyn <fuserwyn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 19:08:05 by fuserwyn          #+#    #+#             */
-/*   Updated: 2021/10/14 19:20:59 by fuserwyn         ###   ########.fr       */
+/*   Updated: 2021/10/14 22:09:22 by fuserwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,20 +69,27 @@ int	is_sorted(t_lists *structure, t_stack *a)
 
 void	stack_a_fillment(t_stack **a, t_lists *structure, int argc, char **argv)
 {
-	int		i;
-	int		j;
+	int			i;
+	int			j;
+	long long	check;
 
 	i = 1;
 	j = 0;
 	while (i < argc)
 	{
-		structure->array[j] = ft_atoi(argv[i]);
-		if (doubles_checker(ft_atoi(argv[i]), structure, j))
+		check = ft_atoi(argv[i]);
+		if (check > INT_MAX || check < INT_MIN)
 		{
 			leaks_cleaner(a, NULL, structure);
 			error_dup();
 		}
-		ft_listback(a, ft_lstinit(ft_atoi(argv[i])));
+		structure->array[j] = (int) check;
+		if (doubles_checker((int) check, structure, j))
+		{
+			leaks_cleaner(a, NULL, structure);
+			error_dup();
+		}
+		ft_listback(a, ft_lstinit((int) check));
 		i++;
 		j++;
 	}
